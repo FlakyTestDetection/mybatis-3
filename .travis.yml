@@ -1,6 +1,3 @@
-after_success:
-- chmod -R 777 ./travis/after_success.sh
-- ./travis/after_success.sh
 language: java
 sudo: false
 
@@ -8,6 +5,7 @@ jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk7
+  - openjdk6
 
 before_install:
 - wget https://dl.dropboxusercontent.com/u/7897865/apache-maven-3.3.9.zip
@@ -27,3 +25,9 @@ notifications:
     template:
     - Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} by %{author} %{result} in %{duration}
     - 'dashbot: %{repository_name} %{build_id}'
+
+script: ./mvnw test -Dmaven.surefire.excludeGroups= -B
+
+after_success:
+  - chmod -R 777 ./travis/after_success.sh
+  - ./travis/after_success.sh
